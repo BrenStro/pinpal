@@ -1,0 +1,18 @@
+extends ../template
+
+block pageVars
+	- var title = "Home — PinPal"
+	- var header = "Welcome to PinPal"
+
+block content
+	main
+		p.
+			Welcome to PinPal, a space for creating collaborative bulletin 
+			boards amongst friends and community members. Sign up today to get 
+			started creating and sharing your own boards.
+		if isNotLoggedIn
+			div(class="flex-container flex-justifyContent-center")
+				a(href="/login" class="button button-s button-secondary") Login
+				a(href="/register" class="button button-primary") Register
+		
+		

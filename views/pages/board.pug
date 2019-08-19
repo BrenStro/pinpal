@@ -1,0 +1,49 @@
+extends ../template
+
+block pageVars
+	- var title = `Board ${board.name} — PinPal`
+	- var header = `${board.name}`
+
+block append javascript
+	script(src="/js/SVG.js" type="text/javascript")
+	script(src="/js/boardPage.js" type="text/javascript")
+
+block header
+	header(class="pageHeader flex-container flex-justifyContent-spaceBetween flex-alignItems-center")
+		h1#boardName=header
+		if board.boardOwner
+			input#inp_boardName(type="text" value=`${board.name}` placeholder="Board Name" class="input input-text" style="display:none;" required)
+			#boardEditButtons(style="display:none;")
+				label#lbl_boardPrivate(for="boardPrivate" style="color:white;") Private?
+				input#cbx_boardPrivate(type="checkbox" checked=board.private)
+				input#btn_boardAddEditor(type="button" value="Add Editor" class="button button-primary" onClick="board.addEditor();")
+				input#btn_boardRemoveEditor(type="button" value="Remove Editor" class="button button-tertiary" onClick="board.removeEditor();")
+				input#btn_boardDelete(type="button" value="Delete Board" class="button label-red" onClick="board.deleteBoard();")
+			input#btn_edit(type="button" value="Edit" class="button button-primary" onClick="board.toggleEditBoard(this);")
+		
+block content
+	div#boardPage(class="flex-container flex-direction-rowReverse")
+		aside#chatLog(class="pageAside flex-item-none flex-container flex-direction-column")
+			ul.flex-item-1
+			
+			div#sendMessage(data-url=`/conversation/${board.conversationId}/send`)
+				input#message(type="text" name="message" placeholder="Write a message…" class="input-text input-block stack_-2x")
+				input#send(type="button" name="send" value="Send" class="button button-primary" onClick="board.sendMessage();")
+	
+		div(class="flex-container flex-direction-column inline_1x").flex-item-1
+			div(class="flex-container flex-alignItems-center toolbar")
+				label.inline_1x(for="strokeWidth") Stroke Width: 
+				input#strokeWidth(type="number" name="strokeWidth" placeholder="Stroke Width" class="input-text" value="3" style="width:3rem")
+				label.inline_1x(for="strokeColor") Stroke Color: 
+				input#strokeColor(type="color" name="strokeColor" placeholder="Stroke Color" class="input-text flex-item-1" value="#333")
+				label.inline_1x(for="fillColor") Fill Color: 
+				input#fillColor(type="color" name="fillColor" placeholder="Fill Color" class="input-text flex-item-1" value="#AA1111")
+			main#svgContainer.flex-item-1
+				svg#boardSvg.cursor_crosshair
+			div(class="flex-container toolbar")
+				button#addLine.flex-item-1(class="button button-tertiary" onClick="board.newLineDrawing();") Line
+				button#addRectangle.flex-item-1(class="button button-tertiary" onClick="board.newRectDrawing();") Rectangle
+				button#addCircle.flex-item-1(class="button button-tertiary" onClick="board.newCircleDrawing();") Circle
+				button#erase.flex-item-1(class="button button-tertiary" onClick="board.erase();") Eraser
+		
+	input#boardId(type="hidden" name="boardId" value=`${board.id}`)

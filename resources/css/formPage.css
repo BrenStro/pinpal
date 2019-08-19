@@ -1,0 +1,11 @@
+body {
+	max-width: 30rem;
+}
+
+main {
+	min-height: auto;
+}
+
+form:not(form:last-of-type) {
+	margin: var(--stack_4x);
+}

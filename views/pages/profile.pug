@@ -1,0 +1,53 @@
+extends ../template
+
+block pageVars
+	- var title = `User ${user.displayName} — PinPal`
+	- var header = `${user.displayName} @${user.username}`
+		
+block append javascript
+	script(src="/js/profilePage.js" type="text/javascript")
+
+block header
+	header(class="pageHeader flex-container flex-justifyContent-spaceBetween flex-alignItems-center")
+		h1#displayName=header
+		if user.currentUser
+			input#inp_displayName(type="text" value=`${user.displayName}` placeholder="Display Name" class="input input-text" style="display:none;" required)
+			input#inp_username(type="text" value=`${user.username}` placeholder="Username" class="input input-text" style="display:none;" required)
+			#profileEditButtons(style="display:none;")
+				input#btn_profileDelete(type="button" value="Delete My Account" class="button label-red" onClick="profile.deleteProfile();")
+			input#btn_edit(type="button" value="Edit" class="button button-primary" onClick="profile.toggleEditProfile(this);")
+
+block content
+	main
+		h2 My Boards
+		#ownedBoards.gridContainer.stack_2x
+			- let rowStart = 1, colStart = 1;
+			- for (let board of user.ownedBoards)
+				div(class="gridItem card button button-tertiary" id=`boardId_${board.id}` onClick=`window.location="/board/${board.id}"` style=`grid-row: ${rowStart} / ${rowStart+1}; grid-column: ${colStart} / ${colStart+1};`)
+					p.strong=board.name
+				- colStart+=1;
+				- index+=1;
+				- if (colStart==4) {rowStart+=1; colStart=1;}
+			if user.currentUser
+				input(type="button" value="+" onClick="profile.showAddBoard();" class="button button-primary button-block gridItem" id="btn_addBoard")
+			#newBoardForm(class="flex-container flex-direction-column flex-alignItems-center" style="display:none")
+				p Create New Board
+				input#boardName(type="text" name="boardName" placeholder="Board Title" class="input input-text" required)
+				div
+					label(for="boardPrivate") Private?
+					input#boardPrivate(type="checkbox")
+				div
+					input#add(type="button" value="Add" onClick="profile.addBoard();" class="button button-primary")
+					input#cancel(type="button" value="Cancel" onClick="profile.cancelAddBoard();" class="button button-secondary")
+		
+		h2 Shared with Me
+		#editorBoards.gridContainer
+			- rowStart = 1, colStart = 1;
+			- for (let board of user.editorBoards)
+				div(class="gridItem card button button-tertiary" id=`boardId_${board.id}` onClick=`window.location="/board/${board.id}"` style=`grid-row: ${rowStart} / ${rowStart+1}; grid-column: ${colStart} / ${colStart+1};`)
+					p.strong=board.name
+				- colStart+=1;
+				- index+=1;
+				- if (colStart==4) {rowStart+=1; colStart=1;}
+					
+	input#username(type="hidden" name="username" value=`${user.username}`)

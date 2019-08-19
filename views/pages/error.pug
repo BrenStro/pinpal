@@ -1,0 +1,9 @@
+extends ../template
+
+block pageVars
+	- var title = `${statusCode} Error — PinPal`
+	- var header = `${statusCode} Error`
+
+block content
+	main
+		h2=error.message

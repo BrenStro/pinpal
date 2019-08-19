@@ -1,0 +1,46 @@
+block pageVars
+
+doctype html
+html
+	head
+		title=title
+		
+		meta(charset="utf-8")
+		meta(http-equiv="X-UA-Compatible" content="IE=edge")
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+
+		meta(name="description" content="A space for creating collaborative bulletin boards amongst friends and community members.")
+		meta(name="author" content="PinPal")
+		
+		block stylesheets
+			link(rel="stylesheet" href="/css/style.css" type="text/css")
+			//- link(rel="icon" href="assets/favicon.ico")
+			
+		block javascript
+			script(src="/js/lib.js" type="text/javascript")
+			
+	body(onload="if (typeof init === 'function') {init();}")
+		block nav
+			nav(class="navbar")
+				ul(class="flex-container flex-alignItems-center")
+					li
+						a(href="/" class="navbar-brand") PinPal
+					li
+						a(href="/lobby") Lobby
+					li(class="flex-item-1")
+						a(href="/user") Profile
+					unless isNotLoggedIn 
+						li
+							a(href="/logout") Logout
+	
+		block header
+			header(class="pageHeader")
+				h1=header
+
+		block content
+		
+		block footer
+			footer(class="pageFooter")
+				- var currentDate = new Date().getFullYear();
+				p Brendon Strowe &copy; #{currentDate}
+				

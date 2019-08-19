@@ -1,0 +1,40 @@
+extends ../template
+
+block pageVars
+	- var title = "Login — PinPal"
+	- var header = "Login"
+
+block append stylesheets
+	link(rel="stylesheet" href="/css/formPage.css" type="text/css")
+
+block nav
+	nav.navbar
+		ul(class="flex-container flex-justifyContent-spaceBetween flex-alignItems-center")
+			li
+				a.navbar-brand(href="/") PinPal
+			li
+				a(href="/register") Register
+
+
+block content
+	main
+		form(name="login" action="/login" method="POST" onsubmit="return validate();")
+			if flashMessages.hasOwnProperty("registrationSuccessMsg")
+				p(class="flashMessage flashSuccess")=flashMessages.registrationSuccessMsg
+			if flashMessages.hasOwnProperty("loginErrorMsg")
+				p(class="flashMessage flashError")=flashMessages.loginErrorMsg
+			
+			input#username(
+				type="text" 
+				name="username" 
+				placeholder="Username" 
+				class="input-text input-block stack_2x"
+			)
+			input#password(
+				type="password" 
+				name="password" 
+				placeholder="Password" 
+				class="input-text input-block stack_2x"
+			)
+			div(class="flex-container flex-justifyContent-center")
+				input(type="submit" value="Login" class="button button-primary")

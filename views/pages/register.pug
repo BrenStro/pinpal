@@ -1,0 +1,51 @@
+extends ../template
+
+block pageVars
+	- var title = "Register — PinPal"
+	- var header = "Register"
+
+block append stylesheets
+	link(rel="stylesheet" href="/css/formPage.css" type="text/css")
+
+block nav
+	nav.navbar
+		ul(class="flex-container flex-justifyContent-spaceBetween flex-alignItems-center")
+			li
+				a.navbar-brand(href="/") PinPal
+			li
+				a(href="/login") Login
+
+
+block content
+	main
+		form(name="register" action="/register" method="POST")
+			if flashMessages.hasOwnProperty("registrationErrorMsg")
+				p(class="flashMessage flashError")=flashMessages.registrationErrorMsg
+			
+			if erroneousFields.hasOwnProperty("username")
+				p(class="flashMessage flashError")=erroneousFields.username
+			input#username(
+				type="text" 
+				name="username" 
+				placeholder="Username" 
+				class="input-text input-block stack_2x" + (erroneousFields.hasOwnProperty("username") ? " erroneousField" : "")
+			)
+			if erroneousFields.hasOwnProperty("password")
+				p(class="flashMessage flashError")=erroneousFields.password
+			input#password(
+				type="password" 
+				name="password" 
+				placeholder="Password" 
+				class="input-text input-block stack_2x" + (erroneousFields.hasOwnProperty("password") ? " erroneousField" : "")
+			)
+			if erroneousFields.hasOwnProperty("displayName")
+				p(class="flashMessage flashError")=erroneousFields.displayName
+			input#displayName(
+				type="text" 
+				name="displayName" 
+				placeholder="Display Name" 
+				class="input-text input-block stack_2x" + (erroneousFields.hasOwnProperty("displayName") ? " erroneousField" : "")
+			)
+			
+			div(class="flex-container flex-justifyContent-center")
+				input(type="submit" value="Register" class="button button-primary")
